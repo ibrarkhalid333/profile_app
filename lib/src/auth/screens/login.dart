@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
     UserPreferences userPreferences = UserPreferences();
     userPreferences.SaveUser(userdetail);
     if (res == true) {
-      Navigator.push(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => ProfileScreen()));
     } else {
       setState(() {
@@ -41,6 +41,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text('Login'),

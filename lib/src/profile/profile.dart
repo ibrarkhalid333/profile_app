@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -67,9 +69,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         backgroundColor: Colors.blueAccent,
                         child: CircleAvatar(
                           radius: 53.r,
-                          backgroundImage: NetworkImage(
-                            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-                          ),
+                          backgroundImage: profile?.imagepath != null &&
+                                  profile!.imagepath!.isNotEmpty
+                              ? FileImage(File(profile!.imagepath!))
+                              : NetworkImage(
+                                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+                                ),
                         ),
                       ),
 
@@ -177,12 +182,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           RoundButton(
                             title: 'Update',
                             width: 120.w,
-                            onPress: () {
-                              Navigator.push(
+                            onPress: () async {
+                              // Navigate and refresh profile when returning
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UpdateProfile()),
+                                  builder: (context) => UpdateProfile(),
+                                ),
                               );
+                              // Reload user details after returning
+                              getUserDetail();
                             },
                           ),
                           SizedBox(width: 20.w),
